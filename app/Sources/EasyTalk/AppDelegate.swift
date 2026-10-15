@@ -37,31 +37,43 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
         let installed = ModelStore.shared.isInstalled(ModelManifest.qwen)
             && (Settings.speechEngine == .apple || ModelStore.shared.isInstalled(ModelManifest.parakeet))
+        Log.write("Launch. setupComplete=\(Settings.setupComplete) modelsInstalled=\(installed) trusted=\(Hotkey.isTrusted)")
+        if installed { startEngines() }  // load models whenever they're present; the hotkey needs Accessibility
         if !Settings.setupComplete || !installed || !Hotkey.isTrusted
             || AVCaptureDevice.authorizationStatus(for: .audio) != .authorized {
             openSetup()
-        } else {
-            startEngines()
         }
     }
 
+    private var enginesStarting = false
+
     private func startEngines() {
-        hotkey.install()
+        if Hotkey.isTrusted { Log.write("Hotkey installed: \(hotkey.install())") }
+        guard !enginesStarting, !modelsReady else { return }
+        enginesStarting = true
         setStatus("Loading models…")
         let engine = Settings.speechEngine
         Task {
             do {
                 let t: Transcriber = engine == .parakeet ? ParakeetTranscriber() : AppleTranscriber()
+                let start = Date()
                 try await t.load()
+                Log.write("Speech engine \(engine.rawValue) loaded in \(Int(Date().timeIntervalSince(start) * 1000)) ms")
                 try await cleaner.load()
+                Log.write("Cleanup model loaded in \(Int(Date().timeIntervalSince(start) * 1000)) ms total")
                 await MainActor.run {
+                    self.enginesStarting = false
                     self.transcriber = t
                     self.modelsReady = true
                     self.setupModel?.modelsReady = true
                     self.setStatus("Easy Talk is ready")
                 }
             } catch {
-                await MainActor.run { self.setStatus("Problem loading models: \(error.localizedDescription)") }
+                Log.write("Model load failed: \(error)")
+                await MainActor.run {
+                    self.enginesStarting = false
+                    self.setStatus("Problem loading models: \(error.localizedDescription)")
+                }
             }
         }
     }
@@ -134,7 +146,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             self?.setupWindow?.close()
             self?.setupWindow = nil
             self?.setupModel = nil
-            self?.hotkey.install()
+            Log.write("Setup finished. Hotkey installed: \(self?.hotkey.install() ?? false)")
         }
         setupModel = model
         let w = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 640, height: 480), styleMask: [.titled, .closable], backing: .buffered, defer: false)

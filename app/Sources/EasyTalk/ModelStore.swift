@@ -24,7 +24,9 @@ final class ModelStore {
 
     /// Folder names match what the libraries expect when loading from disk.
     func folder(for model: PinnedModel) -> URL {
-        root.appendingPathComponent(String(model.repo.split(separator: "/").last!), isDirectory: true)
+        // FluidAudio looks for Parakeet v2 in a folder named "parakeet-tdt-0.6b-v2".
+        let name = model.repo == ModelManifest.parakeet.repo ? "parakeet-tdt-0.6b-v2" : String(model.repo.split(separator: "/").last!)
+        return root.appendingPathComponent(name, isDirectory: true)
     }
 
     /// Already-downloaded copies (from the M2 spikes) we can verify and copy instead of downloading again.
