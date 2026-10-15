@@ -24,6 +24,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var loadedEngine: SpeechEngineChoice?
     private var lastError: String?
     private var statusLine = "Starting…"
+    private var permissionWatch: Timer?
+    private var lastPermissions = (accessibility: false, microphone: false)
 
     private let minHold: TimeInterval = 0.3
     private let doubleTap: TimeInterval = 0.4
@@ -37,6 +39,15 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         statusItem.button?.image = NSImage(systemSymbolName: "waveform", accessibilityDescription: "Easy Talk")
         rebuildMenu()
         hotkey.onEvent = { [weak self] in self?.handle($0) }
+        // Keep the menu's permission items current, and install the hotkey once Accessibility is granted.
+        permissionWatch = Timer.scheduledTimer(withTimeInterval: 2, repeats: true) { [weak self] _ in
+            guard let self else { return }
+            let now = (accessibility: Hotkey.isTrusted, microphone: AVCaptureDevice.authorizationStatus(for: .audio) == .authorized)
+            guard now != self.lastPermissions else { return }
+            self.lastPermissions = now
+            if now.accessibility { self.hotkey.install() }
+            self.rebuildMenu()
+        }
 
         let installed = ModelStore.shared.isInstalled(ModelManifest.qwen)
             && (Settings.speechEngine == .apple || ModelStore.shared.isInstalled(ModelManifest.parakeet))
@@ -93,6 +104,33 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
 
+    @objc private func openAccessibilitySettings() {
+        NSWorkspace.shared.open(URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility")!)
+    }
+
+    @objc private func openMicrophoneSettings() {
+        NSWorkspace.shared.open(URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_Microphone")!)
+    }
+
+    /// Credits for the bundled models and libraries (Parakeet's CC-BY-4.0 license requires attribution).
+    @objc private func showAbout() {
+        let credits = NSMutableAttributedString()
+        let lines: [(String, String?)] = [
+            ("On-device dictation. A personal proof of concept.\n\n", nil),
+            ("Speech recognition: Parakeet TDT 0.6B v2 by NVIDIA, CC-BY-4.0\n", "https://huggingface.co/nvidia/parakeet-tdt-0.6b-v2"),
+            ("Run with FluidAudio, Apache 2.0\n", "https://github.com/FluidInference/FluidAudio"),
+            ("Text cleanup: Qwen 3.5 4B, Apache 2.0\n", "https://huggingface.co/mlx-community/Qwen3.5-4B-MLX-4bit"),
+            ("Run with mlx-swift-lm, MIT\n", "https://github.com/ml-explore/mlx-swift-lm"),
+        ]
+        for (text, link) in lines {
+            var attrs: [NSAttributedString.Key: Any] = [.font: NSFont.systemFont(ofSize: 11)]
+            if let link { attrs[.link] = URL(string: link) }
+            credits.append(NSAttributedString(string: text, attributes: attrs))
+        }
+        NSApp.activate(ignoringOtherApps: true)
+        NSApp.orderFrontStandardAboutPanel(options: [.credits: credits, .applicationName: "Easy Talk"])
+    }
+
     @objc private func copyErrorDetails() {
         guard let lastError else { return }
         NSPasteboard.general.clearContents()
@@ -129,6 +167,17 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         menu.addItem(withTitle: statusLine, action: nil, keyEquivalent: "").isEnabled = false
         menu.addItem(withTitle: "Hold ⌃⌥Space to talk · double-tap to lock", action: nil, keyEquivalent: "").isEnabled = false
         menu.addItem(.separator())
+        // Missing permissions get a direct fix (PRD error path: permission revoked).
+        if !Hotkey.isTrusted {
+            let item = NSMenuItem(title: "Grant Accessibility Access…", action: #selector(openAccessibilitySettings), keyEquivalent: "")
+            item.target = self
+            menu.addItem(item)
+        }
+        if AVCaptureDevice.authorizationStatus(for: .audio) != .authorized {
+            let item = NSMenuItem(title: "Grant Microphone Access…", action: #selector(openMicrophoneSettings), keyEquivalent: "")
+            item.target = self
+            menu.addItem(item)
+        }
         let engineItem = NSMenuItem(title: "Speech engine", action: nil, keyEquivalent: "")
         let sub = NSMenu()
         for e in SpeechEngineChoice.allCases {
@@ -149,6 +198,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         setup.target = self
         menu.addItem(setup)
         menu.addItem(.separator())
+        let about = NSMenuItem(title: "About Easy Talk", action: #selector(showAbout), keyEquivalent: "")
+        about.target = self
+        menu.addItem(about)
         let lock = NSMenuItem(title: "Everything stays on this Mac", action: nil, keyEquivalent: "")
         lock.isEnabled = false
         menu.addItem(lock)
@@ -289,35 +341,20 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             guard let self else { return }
             // Silence-only recordings paste nothing.
             guard peak > 0.008, let transcriber,
-                  let rawText = try? await transcriber.transcribe(samples),
-                  !rawText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
+                  let result = await Pipeline.run(samples, transcriber: transcriber, cleaner: self.cleaner, wordList: words) else {
                 Log.write(String(format: "Dictation: %.1f s audio, no speech detected (peak %.4f)", audioSeconds, peak))
                 await MainActor.run { self.finish(.noSpeech) }
                 return
             }
             if Task.isCancelled { return }
-            let transcribedAt = Date()
-            let raw = TextRules.applyWordList(rawText, words: words)
-            var final = raw
-            var fallbackWhy: String?
-            do {
-                let cleaned = try await withTimeout(Cleanup.timeoutSeconds) { try await self.cleaner.clean(raw, wordList: words) }
-                if let why = Cleanup.rejectionReason(raw: raw, cleaned: cleaned) { fallbackWhy = why } else { final = cleaned }
-            } catch {
-                fallbackWhy = Task.isCancelled ? nil : "Cleanup skipped"
-            }
-            if Task.isCancelled { return }
-            let text = final
-            let why = fallbackWhy
-            let ms = { (d: Date) in Int(d.timeIntervalSince(released) * 1000) }
             Log.write(String(format: "Dictation: %.1f s audio, transcribed %d ms, cleaned %d ms, fallback=%@",
-                             audioSeconds, ms(transcribedAt), ms(Date()), why ?? "none"))
+                             audioSeconds, result.transcribeMs, result.totalMs, result.fallbackReason ?? "none"))
             await MainActor.run {
-                let outcome = Paster.deliver(text)
-                Log.write("Delivered: \(outcome == .pasted ? "pasted" : "copied") in \(ms(Date())) ms after release")
+                let outcome = Paster.deliver(result.final)
+                Log.write("Delivered: \(outcome == .pasted ? "pasted" : "copied") in \(Int(Date().timeIntervalSince(released) * 1000)) ms after release")
                 if outcome == .copied { self.finish(.copied) }
-                else if why != nil { self.finish(.fallback("Cleanup skipped")) }
-                else { self.finish(.done(words: TextRules.wordCount(text))) }
+                else if result.fallbackReason != nil { self.finish(.fallback("Cleanup skipped")) }
+                else { self.finish(.done(words: TextRules.wordCount(result.final))) }
             }
         }
     }

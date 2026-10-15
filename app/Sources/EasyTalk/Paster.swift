@@ -7,9 +7,10 @@ import EasyTalkCore
 enum Paster {
     enum Outcome { case pasted, copied }
 
-    static func deliver(_ text: String) -> Outcome {
+    /// `pressKeys: false` and `assumeTarget` exist for the self-test, which must not type into other apps.
+    static func deliver(_ text: String, pressKeys: Bool = true, assumeTarget: Bool? = nil) -> Outcome {
         let pb = NSPasteboard.general
-        let target = hasFocusedTextTarget()
+        let target = assumeTarget ?? hasFocusedTextTarget()
         let saved = target ? snapshot(pb) : nil
 
         let html = RichText.html(from: text)
@@ -21,7 +22,9 @@ enum Paster {
 
         guard target else { return .copied }  // R24: keep it on the clipboard
         let ours = pb.changeCount
-        if NSWorkspace.shared.frontmostApplication?.processIdentifier == ProcessInfo.processInfo.processIdentifier {
+        if !pressKeys {
+            // Self-test: leave the text on the clipboard; the restore below still runs.
+        } else if NSWorkspace.shared.frontmostApplication?.processIdentifier == ProcessInfo.processInfo.processIdentifier {
             // Easy Talk's own windows (e.g. the setup practice box): paste straight into the focused field.
             NSApp.sendAction(#selector(NSText.paste(_:)), to: nil, from: nil)
         } else {

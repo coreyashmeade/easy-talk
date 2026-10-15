@@ -63,7 +63,7 @@ final class ModelStore {
         for file in model.files {
             let dest = dir.appendingPathComponent(file.path)
             try fm.createDirectory(at: dest.deletingLastPathComponent(), withIntermediateDirectories: true)
-            if fm.fileExists(atPath: dest.path), (try? Self.sha256(of: dest)) == file.sha256 {
+            if fm.fileExists(atPath: dest.path), Self.verify(dest, against: file) {
                 done += file.size; progress(Double(done) / Double(total)); continue
             }
             try? fm.removeItem(at: dest)
@@ -71,7 +71,7 @@ final class ModelStore {
             var placed = false
             for src in localSources(for: model) {
                 let candidate = src.appendingPathComponent(file.path).resolvingSymlinksInPath()
-                if fm.fileExists(atPath: candidate.path), (try? Self.sha256(of: candidate)) == file.sha256 {
+                if fm.fileExists(atPath: candidate.path), Self.verify(candidate, against: file) {
                     try fm.copyItem(at: candidate, to: dest)
                     placed = true
                     break
@@ -82,7 +82,7 @@ final class ModelStore {
                 let tmp = try await download(model.url(for: file)) { fraction in
                     progress(Double(base + Int64(Double(file.size) * fraction)) / Double(total))
                 }
-                guard (try? Self.sha256(of: tmp)) == file.sha256 else {
+                guard Self.verify(tmp, against: file) else {
                     try? fm.removeItem(at: tmp)
                     throw ModelError.checksumMismatch(file.path)
                 }
@@ -104,6 +104,9 @@ final class ModelStore {
         try FileManager.default.moveItem(at: tmp, to: kept)
         return kept
     }
+
+    /// True only when the file's SHA-256 matches the pinned value (R40).
+    static func verify(_ url: URL, against file: PinnedFile) -> Bool { (try? sha256(of: url)) == file.sha256 }
 
     static func sha256(of url: URL) throws -> String {
         let handle = try FileHandle(forReadingFrom: url)
