@@ -1,0 +1,4 @@
+.build/
+.build-xc/
+out/
+*.app/
