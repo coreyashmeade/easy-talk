@@ -2,7 +2,7 @@
 
 Reviewed 2026-10-15 against each project's published license.
 
-**Summary:** Easy Talk is released under the MIT License (`LICENSE`). Parakeet requires attribution to NVIDIA, provided in the README and the app's About panel. No GPL code is used.
+**Summary:** Easy Talk is released under the MIT License (`LICENSE`). Parakeet requires attribution to NVIDIA, provided in the README and the app's About panel. Full license texts for every bundled library are in `THIRD_PARTY_NOTICES.md`, which is also packaged inside the app (regenerate with `scripts/make-third-party-notices.py`). No GPL code is used.
 
 | Component | Used for | License | Obligation |
 |---|---|---|---|

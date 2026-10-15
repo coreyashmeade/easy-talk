@@ -11,6 +11,7 @@ mkdir -p "$(dirname "$APP")" && rm -rf "$APP" && mkdir -p "$APP/Contents/MacOS" 
 cp "$P/EasyTalk" "$APP/Contents/MacOS/"
 cp Info.plist "$APP/Contents/"
 for b in "$P"/*.bundle; do cp -R "$b" "$APP/Contents/Resources/"; done
+cp ../LICENSE ../THIRD_PARTY_NOTICES.md "$APP/Contents/Resources/"
 codesign --force --options runtime --entitlements EasyTalk.entitlements \
   --sign "${SIGN_IDENTITY:-Apple Development}" "$APP"
 codesign --verify --strict "$APP" && echo "Built and signed: $APP"

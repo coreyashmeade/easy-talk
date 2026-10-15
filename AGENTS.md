@@ -21,7 +21,8 @@ As of: 2026-10-15
 | `docs/licenses.md` | Third-party licenses and obligations |
 | `decisions.md` | Decision log |
 | `app/` | The app (Swift package). `app/build.sh` builds and signs `Easy Talk.app` |
-| `scripts/` | Release packaging and model checksum generation |
+| `scripts/` | Release packaging, third-party notices and model checksum generation |
+| `THIRD_PARTY_NOTICES.md` | License texts for bundled libraries; regenerate after dependency changes |
 | `tests/cleanup-cases.json` | Cleanup and safety test set |
 | `spikes/` | M2 prototypes; not shipped |
 

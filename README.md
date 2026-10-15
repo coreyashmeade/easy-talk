@@ -5,6 +5,8 @@ A personal proof of concept for on-device dictation on macOS, built around one s
 ![The Easy Talk recording pill](docs/images/pill.png)
 
 > **Not maintained.** This repository is archived. It is shared as-is for reference; issues and pull requests are not accepted. Mature tools already cover this space, including [Wispr Flow](https://wisprflow.ai), [FluidVoice](https://github.com/altic-dev/FluidVoice), [VoiceInk](https://github.com/Beingpax/VoiceInk) and [Handy](https://github.com/cjpais/Handy). For everyday use, start there.
+>
+> Easy Talk is an independent project and isn't affiliated with or endorsed by Wispr Flow or any other company mentioned here.
 
 ## Requirements
 - Apple Silicon Mac
@@ -84,7 +86,7 @@ All screens were designed before any code was written. The settings and history 
 | `decisions.md` | Decision log |
 
 ## License
-MIT. See `LICENSE`. Model and library licenses are listed in `docs/licenses.md`.
+MIT. See `LICENSE`. Third-party license texts are in `THIRD_PARTY_NOTICES.md` (also included in the app at `Easy Talk.app/Contents/Resources/`); a summary of obligations is in `docs/licenses.md`.
 
 ## Acknowledgements
 - Speech recognition: [Parakeet TDT 0.6B v2](https://huggingface.co/nvidia/parakeet-tdt-0.6b-v2) by NVIDIA, licensed under [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/), run with [FluidAudio](https://github.com/FluidInference/FluidAudio) (Apache 2.0)
