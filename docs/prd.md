@@ -11,8 +11,8 @@ Product Requirements Document
 
 ## Background
 - Dictating is faster than typing, but raw speech-to-text is messy: filler words, false starts, run-on thoughts and no structure.
-- Tools like Wispr Flow fix this with a language-model cleanup step. The open-source options (VoiceInk, Handy, OpenWhispr, FluidVoice) either skip cleanup, keep it closed source, send text to the cloud, or add far more than this use case needs.
-- Easy Talk does only the core loop (hotkey, talk, clean text at the cursor), fully on-device, and is safe enough to share publicly later.
+- Tools like Wispr Flow solve this with a language-model cleanup step, and capable open-source alternatives exist (VoiceInk, Handy, OpenWhispr, FluidVoice).
+- Easy Talk is a personal proof of concept shaped around one workflow: only the core loop (hotkey, talk, clean text at the cursor), fully on-device, and safe to share publicly.
 
 ## Goals & Non-Goals
 **Goals**

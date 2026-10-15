@@ -36,7 +36,7 @@ Easy Talk only needs to do this loop well. Everything else is optional.
 - **Handy (closest in spirit).** "One tool, one job." Fully local, minimal UI, hold-or-toggle hotkey, silence detection, and careful clipboard restore. A good reference for scope; minimal cleanup and formatting.
 - **FluidVoice.** The most polished: live preview, notch-aware overlay, many speech models. The cleanup model is closed source, and a command mode can launch apps and run actions; Easy Talk deliberately excludes that capability.
 - **VoiceInk.** Native Mac, custom dictionary, and per-app modes. Reads screen content for context, which adds privacy exposure.
-- **OpenWhispr.** Broad scope: meetings, notes, teams, agents, cloud sync, enterprise SSO. Useful as a list of non-goals.
+- **OpenWhispr.** Broad scope: meetings, notes, teams, agents, cloud sync, enterprise SSO; well beyond what this project needs.
 
 ### Patterns adopted
 - Hold-to-talk **and** tap-to-toggle on the same key.
