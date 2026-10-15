@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CFBundleIdentifier</key><string>com.coreyashmeade.easytalk</string>
+    <key>CFBundleName</key><string>Easy Talk</string>
+    <key>CFBundleDisplayName</key><string>Easy Talk</string>
+    <key>CFBundleExecutable</key><string>EasyTalk</string>
+    <key>CFBundlePackageType</key><string>APPL</string>
+    <key>CFBundleShortVersionString</key><string>0.1.0</string>
+    <key>CFBundleVersion</key><string>1</string>
+    <key>LSMinimumSystemVersion</key><string>26.0</string>
+    <key>LSUIElement</key><true/>
+    <key>NSMicrophoneUsageDescription</key><string>Easy Talk listens only while you hold the shortcut, to turn your speech into text on this Mac.</string>
+    <key>NSSpeechRecognitionUsageDescription</key><string>Used only if you choose Apple's built-in speech engine. Recognition runs on this Mac.</string>
+    <key>NSHumanReadableCopyright</key><string>Speech model: NVIDIA Parakeet TDT 0.6B v2 (CC-BY-4.0). Cleanup model: Qwen 3.5 4B (Apache 2.0).</string>
+</dict>
+</plist>
