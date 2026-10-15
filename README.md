@@ -2,6 +2,8 @@
 
 A personal proof of concept for on-device dictation on macOS, built around one specific workflow. Hold **Control + Option + Space**, speak, and release: the speech is transcribed locally, cleaned up (filler words removed, self-corrections resolved, lists and paragraphs formatted) and pasted at the cursor.
 
+![The Easy Talk recording pill](docs/images/pill.png)
+
 > **Not maintained.** This repository is archived. It is shared as-is for reference; issues and pull requests are not accepted. Mature tools already cover this space, including [Wispr Flow](https://wisprflow.ai), [FluidVoice](https://github.com/altic-dev/FluidVoice), [VoiceInk](https://github.com/Beingpax/VoiceInk) and [Handy](https://github.com/cjpais/Handy). For everyday use, start there.
 
 ## Requirements
@@ -59,6 +61,16 @@ Complete as a proof of concept (v0.1.0). The core loop is built and verified (`d
 - A custom word list editor (the word list can be set with `defaults write com.coreyashmeade.easytalk wordList -array <words>`)
 - Dictation history
 - Silence trimming within recordings
+
+## How it was built
+Specs and design came before code: research and a PRD reviewed in a doc, screens designed and reviewed on a canvas, the riskiest parts prototyped, then the app built and tested.
+
+![How Easy Talk was built](docs/images/process.png)
+
+## Design
+All screens were designed before any code was written. The settings and history screens were designed but not built.
+
+![Easy Talk screen designs](docs/images/screens.png)
 
 ## Documentation
 | Doc | Contents |
