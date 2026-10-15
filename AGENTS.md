@@ -5,7 +5,7 @@ Private, on-device Mac dictation: hold a hotkey, speak, and get clean, formatted
 
 ## Status
 As of: 2026-10-15
-- M0 to M2 complete; **M3 (core loop, P0) in progress**. See `docs/build-plan.md`.
+- **Complete as a proof of concept (2026-10-15).** P0 built and verified (`docs/m3-results.md`); P1 deferred; M4/M5 dropped.
 - PRD approved 2026-10-14; design approved 2026-10-15.
 - Reference machine: MacBook Pro, M5 Pro, 64 GB, macOS 26.6.
 - Repo: [github.com/coreyashmeade/easy-talk](https://github.com/coreyashmeade/easy-talk) (private).
@@ -19,7 +19,7 @@ As of: 2026-10-15
 | `docs/design/` | Approved design source (one `.dc.html` per screen) |
 | `docs/research.md` | Comparable tools and model options |
 | `docs/licenses.md` | Third-party licenses and obligations |
-| `docs/m2-results.md` | Risk-check results |
+| `docs/m2-results.md`, `docs/m3-results.md` | Risk-check and core-loop test results |
 | `decisions.md` | Decision log |
 | `app/` | The app (Swift package). `app/build.sh` builds and signs `Easy Talk.app` |
 | `tests/cleanup-cases.json` | Cleanup and safety test set |
@@ -31,7 +31,7 @@ External: [design canvas](https://claude.ai/artifact/WAMdyNsJ8XFLAp7ThQKXgm) (de
 ## How to run / test
 - Xcode 27 with the Metal Toolchain (`xcodebuild -downloadComponent MetalToolchain`).
 - Deployment target is macOS 26.0 (the Xcode 27 SDK defaults to 27).
-- Build and launch: `app/build.sh --run`. Unit tests: `xcodebuild test -scheme EasyTalk -destination 'platform=macOS,arch=arm64' -only-testing:EasyTalkCoreTests` (from `app/`).
+- Build and launch: `app/build.sh --run`. Self-test: `"app/build/Easy Talk.app/Contents/MacOS/EasyTalk" --selftest tests/cleanup-cases.json`. Log: `~/Library/Logs/EasyTalk.log`. Unit tests: `xcodebuild test -scheme EasyTalk -destination 'platform=macOS,arch=arm64' -only-testing:EasyTalkCoreTests` (from `app/`).
 - Sign with a stable Apple Development identity, never ad-hoc; ad-hoc builds lose Microphone and Accessibility permission on every rebuild. Signing needs Apple's WWDR G3 intermediate in the login keychain.
 - Bundle ID: `com.coreyashmeade.easytalk`.
 

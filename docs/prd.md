@@ -6,7 +6,8 @@ Product Requirements Document
 ## Context & Links
 - **Source:** No separate BRD; this is a personal proof of concept. Research: `docs/research.md`.
 - **Owner:** Corey Ashmeade
-- **Status:** Approved (2026-10-14)
+- **Status:** Approved 2026-10-14. Delivered 2026-10-15 as a proof of concept: all P0 requirements built and verified (`docs/m3-results.md`).
+- **Deferred:** R5, R7 (beyond skipping silence-only recordings), R8, R19 settings UI, R28 custom sounds, R29–R35 (settings window, launch at login, history). The settings screens are designed (`docs/design/`) but not built. Built beyond P0: R4, R6, R12 (from the menu bar).
 - **Related:** build plan (`docs/build-plan.md`), decision log (`decisions.md`), approved design (`docs/design/`).
 
 ## Background
@@ -123,7 +124,7 @@ Product Requirements Document
 3. User talks, then releases the keys. Stop sound plays; pill shows **Thinking**.
 4. Speech is transcribed, then cleaned up.
 5. The cleaned text is checked (R38). If it passes, it's pasted; if not, the raw transcript is pasted.
-6. Pill shows **Done** briefly, then hides. Clipboard is restored. Entry is saved to history.
+6. Pill shows **Done** briefly, then hides. Clipboard is restored.
 
 **Hands-free flow:** double-tap the trigger → pill shows **Listening (locked)** → user talks → presses the trigger once → continues from step 3.
 
@@ -131,15 +132,15 @@ Product Requirements Document
 - **Esc** at any point before paste → pill shows **Cancelled**, nothing pasted or saved.
 - **No text field focused** → result goes to clipboard; pill shows **Copied**.
 - **No speech detected** → pill shows **Didn't catch that**; nothing pasted.
-- **Model missing or failed to load** → raw transcript is pasted; pill shows **Cleanup unavailable** and the menu bar offers a fix.
-- **Microphone or Accessibility permission revoked** → pill shows the problem; clicking it opens the right System Settings page.
+- **Models not loaded** → recording doesn't start; the pill says the models didn't load, and the menu bar shows the error with **Copy Error Details**. If cleanup fails mid-dictation, the raw transcript is pasted.
+- **Microphone or Accessibility permission missing** → the menu bar shows **Grant Microphone Access…** or **Grant Accessibility Access…**, which opens the right System Settings page.
 
 **States:** Idle → Listening (or Listening locked) → Thinking → Done / Copied / Cancelled / Error → Idle.
 
 **First-run flow:** Welcome → Microphone permission → Accessibility permission → Choose speech engine → Download models (with progress and checksum check) → Try it (a practice text box) → Done.
 
 ## Detailed Behavior / Business Rules
-- **Very short presses:** a trigger hold under 300 ms is ignored (no recording, no sound).
+- **Very short presses:** a trigger hold under 300 ms is ignored: no sound, no pill, and the audio is discarded.
 - **Busy state:** pressing the trigger while Thinking does nothing until the current dictation finishes.
 - **Cleanup check (R38).** The cleaned result is rejected, and raw text pasted instead, if any of these is true:
   - It has more than 20% more words than the raw transcript, ignoring list markers.
@@ -150,14 +151,14 @@ Product Requirements Document
 - **Lists:** a list is formatted when the speaker signals items ("first… second…", "a few things: …") or uses a spoken cue. Otherwise the output is paragraphs.
 - **Word list:** applies after transcription and before cleanup, and cleanup must not change listed words.
 - **Model stays ready:** the cleanup model is kept loaded so there's no reload delay after idle time.
-- **Clipboard restore:** happens after the target app confirms it has read the paste, with a 1-second fallback.
+- **Clipboard restore:** 1 second after pasting, unless the clipboard has changed since.
 - **Max length:** at 5:00 recording stops automatically and continues to Thinking.
 
 ## Non-Functional Requirements
 - **Speed:** for a 30-second dictation, release-to-paste in 2 seconds or less (median), measured on the reference machine.
 - **Memory:** total app memory with models loaded stays under 8 GB.
 - **Offline:** every feature except the first model download works with Wi-Fi off.
-- **Storage:** history is stored as text in the user's Library folder, readable only by the user's account.
+- **Storage:** no dictation history is stored (history deferred).
 - **Dependencies:** few open-source libraries, pinned to exact versions. Models come only from official publishers.
 - **Licensing:** Easy Talk's own code is written fresh (no code copied from GPL projects), so it can be released under MIT later.
 

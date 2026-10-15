@@ -17,3 +17,5 @@ Newest at the bottom. Format: `YYYY-MM-DD: <decision>. Why: <reason>. Replaces: 
 2026-10-15: Spoken formatting commands ("new paragraph", "new line", "bullet") are applied by rules before cleanup; text is split at spoken breaks and each piece cleaned separately. Why: the model did not honor them reliably (M2).
 2026-10-15: M2 passed: 34/34 cleanup cases, median 0.39 s end-of-speech to text, no stray hotkey input, rich paste correct. Qwen 3.5 4B retained; 8B not needed.
 2026-10-15: Models are downloaded from pinned Hugging Face revisions and verified against SHA-256 checksums before use. Why: PRD R40, supply-chain safety.
+2026-10-15: Project closed as a proof of concept after M3. All P0 requirements built and verified; P1 features (settings window, history, launch at login, custom sounds, mic and shortcut pickers) deferred; daily-use review dropped. Replaces: M4 and M5 in the build plan.
+2026-10-15: Verification uses an in-app self-test (`--selftest`) that runs the production pipeline on synthesized speech. Why: repeatable checks without simulated keystrokes or pasting into other apps.
