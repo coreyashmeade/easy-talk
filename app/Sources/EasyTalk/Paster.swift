@@ -39,18 +39,42 @@ enum Paster {
     /// True when the frontmost app has a focused element that accepts text. Reads only the element's role
     /// and whether its value is editable, never its contents (R43).
     static func hasFocusedTextTarget() -> Bool {
-        let sys = AXUIElementCreateSystemWide()
+        guard let app = NSWorkspace.shared.frontmostApplication else { return false }
+        let appElement = AXUIElementCreateApplication(app.processIdentifier)
+        // Electron and Chromium apps (Claude, Slack, VS Code…) only expose their text fields to
+        // accessibility clients after this flag is set.
+        AXUIElementSetAttributeValue(appElement, "AXManualAccessibility" as CFString, kCFBooleanTrue)
+
         var focused: CFTypeRef?
-        guard AXUIElementCopyAttributeValue(sys, kAXFocusedUIElementAttribute as CFString, &focused) == .success,
-              let el = focused else { return false }
+        var result = AXUIElementCopyAttributeValue(appElement, kAXFocusedUIElementAttribute as CFString, &focused)
+        if result != .success || focused == nil {
+            let sys = AXUIElementCreateSystemWide()
+            result = AXUIElementCopyAttributeValue(sys, kAXFocusedUIElementAttribute as CFString, &focused)
+        }
+        let appName = app.bundleIdentifier ?? app.localizedName ?? "unknown"
+        guard result == .success, let el = focused else {
+            // No focused element reported. A frontmost app with a key window almost always has a text cursor
+            // when someone dictates, so paste; the Finder desktop and similar have no window.
+            let hasWindow = windowCount(appElement) > 0 && app.bundleIdentifier != "com.apple.finder"
+            Log.write("Paste target: \(appName), no focused element reported, window=\(hasWindow)")
+            return hasWindow
+        }
         let element = el as! AXUIElement
         var roleRef: CFTypeRef?
         AXUIElementCopyAttributeValue(element, kAXRoleAttribute as CFString, &roleRef)
         let role = roleRef as? String ?? ""
-        if ["AXTextField", "AXTextArea", "AXComboBox", "AXSearchField", "AXWebArea"].contains(role) { return true }
         var settable: DarwinBoolean = false
         AXUIElementIsAttributeSettable(element, kAXValueAttribute as CFString, &settable)
-        return settable.boolValue
+        let textRoles = ["AXTextField", "AXTextArea", "AXComboBox", "AXSearchField", "AXWebArea"]
+        let accepts = textRoles.contains(role) || settable.boolValue
+        Log.write("Paste target: \(appName), role=\(role.isEmpty ? "none" : role), editable=\(settable.boolValue), paste=\(accepts)")
+        return accepts
+    }
+
+    private static func windowCount(_ app: AXUIElement) -> Int {
+        var windows: CFTypeRef?
+        guard AXUIElementCopyAttributeValue(app, kAXWindowsAttribute as CFString, &windows) == .success else { return 0 }
+        return (windows as? [AXUIElement])?.count ?? 0
     }
 
     private static func snapshot(_ pb: NSPasteboard) -> [NSPasteboardItem] {
