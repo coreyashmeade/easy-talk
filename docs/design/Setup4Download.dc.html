@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Easy Talk setup, download models</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0}
+svg:not([data-mark]){filter:drop-shadow(0 0 0.6px rgba(42,33,24,0.9)) drop-shadow(0 0 0.3px rgba(42,33,24,0.9))}
+a{color:#B23A22}a:hover{color:#8A2A16}
+</style>
+</helmet>
+<div style="width: 640px; height: 480px; box-sizing: border-box; background: #FFFBEF; font-family: -apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif; color: #2A2118; display: flex; flex-direction: column; font-size: 13px">
+<div style="height: 36px; display: flex; align-items: center; padding: 0 14px; gap: 8px"><div style="width: 12px; height: 12px; border-radius: 6px; background: #EE6A5F"></div><div style="width: 12px; height: 12px; border-radius: 6px; background: #E5D9B6"></div><div style="width: 12px; height: 12px; border-radius: 6px; background: #E5D9B6"></div><svg width="22" height="18" viewBox="0 0 22 18" aria-hidden="true" data-mark="1" style="margin-left: auto; flex: none; opacity: 0.55"><path d="M2 16L5.5 9.5L3.5 8.5L7 2M8.5 16L12 9.5L10 8.5L13.5 2M15 16L18.5 9.5L16.5 8.5L20 2" stroke="#5C4317" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" fill="none"></path></svg></div>
+<div style="flex: 1; display: flex; flex-direction: column; gap: 18px; padding: 12px 56px 0">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<h1 style="margin: 0; font-size: 22px; font-weight: 700">Getting the models ready</h1>
+<p style="margin: 0; font-size: 14px; color: #5A4E38">A one-time download. After this, Easy Talk never goes online.</p>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 8px; padding: 14px 16px; border-radius: 10px; background: #FFFFFF; border: 1px solid #EFE3C2">
+<div style="display: flex; justify-content: space-between"><strong>Parakeet speech model</strong><span style="display: flex; align-items: center; gap: 5px; color: #2A2118; font-weight: 600"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2A2118" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>Verified</span></div>
+<div style="height: 6px; border-radius: 3px; background: #E0AE00"></div>
+<span style="color: #7A6B4F">600 MB · checksum matches</span>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 8px; padding: 14px 16px; border-radius: 10px; background: #FFFFFF; border: 1px solid #EFE3C2">
+<div style="display: flex; justify-content: space-between"><strong>Qwen 3.5 4B cleanup model</strong><span style="color: #463B28; font-variant-numeric: tabular-nums">62%</span></div>
+<div style="height: 6px; border-radius: 3px; background: #F6EBC8; overflow: hidden"><div style="width: 62%; height: 6px; background: #E0AE00"></div></div>
+<span style="color: #7A6B4F">1.8 of 2.9 GB · about 40 seconds left</span>
+</div>
+
+<div style="display: flex; align-items: center; gap: 8px; color: #6A5D45; padding: 0 4px">
+<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#6A5D45" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 3l8 4v5c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V7z"></path></svg>
+<span>Each file is checked against a known fingerprint before it's used.</span>
+</div>
+</div>
+<div style="height: 64px; border-top: 1px solid #EFE5C8; display: flex; align-items: center; justify-content: space-between; padding: 0 22px">
+<div style="display: flex; gap: 6px" aria-label="Step 4 of 5"><div style="width: 6px; height: 6px; border-radius: 3px; background: #E3D7B3"></div><div style="width: 6px; height: 6px; border-radius: 3px; background: #E3D7B3"></div><div style="width: 6px; height: 6px; border-radius: 3px; background: #E3D7B3"></div><div style="width: 18px; height: 6px; border-radius: 3px; background: #E0AE00"></div><div style="width: 6px; height: 6px; border-radius: 3px; background: #E3D7B3"></div></div>
+<div style="display: flex; gap: 8px; align-items: center">
+<a href="Setup3Engine.dc.html" style="padding: 7px 14px; border-radius: 7px; color: #463B28; text-decoration: none">Back</a>
+<a href="Setup5Try.dc.html" style="padding: 7px 18px; border-radius: 7px; background: #F5C518; color: #2A2118; text-decoration: none; font-weight: 600">Continue</a>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":640,"height":480}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>

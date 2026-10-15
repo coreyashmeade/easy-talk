@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Easy Talk menu bar menu</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0}
+svg:not([data-mark]){filter:drop-shadow(0 0 0.6px rgba(42,33,24,0.9)) drop-shadow(0 0 0.3px rgba(42,33,24,0.9))}
+a{color:#B23A22}a:hover{color:#8A2A16}
+</style>
+</helmet>
+<div style="width: 420px; height: 620px; box-sizing: border-box; background: #EDE4C8; font-family: -apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif; color: #2A2118; display: flex; flex-direction: column; align-items: flex-end">
+<div style="align-self: stretch; height: 30px; background: #F6EFDA; display: flex; align-items: center; justify-content: flex-end; gap: 14px; padding: 0 16px; font-size: 13px">
+<div style="width: 28px; height: 22px; border-radius: 5px; background: #E3D7B3; display: flex; align-items: center; justify-content: center">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2A2118" stroke-width="1.9" stroke-linecap="round" role="img" aria-label="Easy Talk"><rect x="9" y="3" width="6" height="11" rx="3"></rect><path d="M5 11a7 7 0 0 0 14 0"></path><path d="M12 18v3"></path></svg>
+</div>
+<span>Tue 9:41 AM</span>
+</div>
+<div style="margin: 6px 12px 0 0; width: 300px; box-sizing: border-box; border-radius: 12px; background: #FFFBEF; border: 1px solid #E5D9B6; box-shadow: 0 12px 32px rgba(0,0,0,0.18); padding: 6px; display: flex; flex-direction: column; font-size: 13px">
+
+<div style="padding: 10px 10px 12px; display: flex; flex-direction: column; gap: 4px">
+<div style="display: flex; align-items: center; gap: 8px; align-self: stretch"><div style="width: 8px; height: 8px; border-radius: 4px; background: {{accent}}"></div><strong style="font-size: 14px">Easy Talk is ready</strong><svg width="22" height="18" viewBox="0 0 22 18" aria-hidden="true" data-mark="1" style="margin-left: auto; flex: none; opacity: 0.55"><path d="M2 16L5.5 9.5L3.5 8.5L7 2M8.5 16L12 9.5L10 8.5L13.5 2M15 16L18.5 9.5L16.5 8.5L20 2" stroke="#5C4317" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" fill="none"></path></svg></div>
+<div style="color: #6A5D45">Hold ⌃⌥Space to talk · double-tap to lock</div>
+</div>
+<div style="height: 1px; background: #EFE3C2; margin: 0 6px"></div>
+
+<div style="padding: 8px 10px 4px; font-size: 11px; font-weight: 600; color: #7A6B4F; letter-spacing: 0.04em; text-transform: uppercase">Recent</div>
+<button style="all: unset; cursor: default; display: flex; flex-direction: column; gap: 2px; padding: 7px 10px; border-radius: 6px; background: {{accent}}">
+<span style="color: #2A2118; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 260px">Thanks Sam, let's move the review to Wednesday…</span>
+<span style="color: #6B5317; font-size: 11px">2 min ago · Slack · click to copy</span>
+</button>
+<button style="all: unset; cursor: default; display: flex; flex-direction: column; gap: 2px; padding: 7px 10px; border-radius: 6px">
+<span style="font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 260px">Three things for the launch: first, confirm…</span>
+<span style="color: #7A6B4F; font-size: 11px">18 min ago · Gmail</span>
+</button>
+<button style="all: unset; cursor: default; display: flex; flex-direction: column; gap: 2px; padding: 7px 10px; border-radius: 6px">
+<span style="font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 260px">I think the onboarding should start with…</span>
+<span style="color: #7A6B4F; font-size: 11px">1 hr ago · Google Docs</span>
+</button>
+<div style="height: 1px; background: #EFE3C2; margin: 6px 6px"></div>
+
+<button style="all: unset; cursor: default; display: flex; justify-content: space-between; padding: 6px 10px; border-radius: 6px"><span>Open history…</span><span style="color: #8F8166">⌘Y</span></button>
+<button style="all: unset; cursor: default; display: flex; justify-content: space-between; padding: 6px 10px; border-radius: 6px"><span>Speech engine</span><span style="color: #7A6B4F">Parakeet ›</span></button>
+<button style="all: unset; cursor: default; display: flex; justify-content: space-between; padding: 6px 10px; border-radius: 6px"><span>Microphone</span><span style="color: #7A6B4F">MacBook Pro Mic ›</span></button>
+<div style="height: 1px; background: #EFE3C2; margin: 6px 6px"></div>
+<button style="all: unset; cursor: default; display: flex; justify-content: space-between; padding: 6px 10px; border-radius: 6px"><span>Settings…</span><span style="color: #8F8166">⌘,</span></button>
+<button style="all: unset; cursor: default; display: flex; justify-content: space-between; padding: 6px 10px; border-radius: 6px"><span>Quit Easy Talk</span><span style="color: #8F8166">⌘Q</span></button>
+<div style="padding: 8px 10px 6px; display: flex; align-items: center; gap: 6px; color: #7A6B4F; font-size: 11px">
+<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#7A6B4F" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg>
+<span>Everything stays on this Mac</span>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#F5C518","options":["#F5C518","#3B6FD8","#B7791F","#7C4DCC"]},"$preview":{"width":420,"height":620}}'>
+class Component extends DCLogic {
+renderVals() {
+return { accent: this.props.accent ?? '#F5C518' };
+}
+}
+</script>
+</body>
+</html>

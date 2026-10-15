@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Easy Talk setup, permissions</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0}
+svg:not([data-mark]){filter:drop-shadow(0 0 0.6px rgba(42,33,24,0.9)) drop-shadow(0 0 0.3px rgba(42,33,24,0.9))}
+a{color:#B23A22}a:hover{color:#8A2A16}
+</style>
+</helmet>
+<div style="width: 640px; height: 480px; box-sizing: border-box; background: #FFFBEF; font-family: -apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif; color: #2A2118; display: flex; flex-direction: column; font-size: 13px">
+<div style="height: 36px; display: flex; align-items: center; padding: 0 14px; gap: 8px"><div style="width: 12px; height: 12px; border-radius: 6px; background: #EE6A5F"></div><div style="width: 12px; height: 12px; border-radius: 6px; background: #E5D9B6"></div><div style="width: 12px; height: 12px; border-radius: 6px; background: #E5D9B6"></div><svg width="22" height="18" viewBox="0 0 22 18" aria-hidden="true" data-mark="1" style="margin-left: auto; flex: none; opacity: 0.55"><path d="M2 16L5.5 9.5L3.5 8.5L7 2M8.5 16L12 9.5L10 8.5L13.5 2M15 16L18.5 9.5L16.5 8.5L20 2" stroke="#5C4317" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" fill="none"></path></svg></div>
+<div style="flex: 1; display: flex; flex-direction: column; gap: 16px; padding: 12px 56px 0">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<h1 style="margin: 0; font-size: 22px; font-weight: 700">Two permissions, nothing more</h1>
+<p style="margin: 0; font-size: 14px; color: #5A4E38">macOS asks for these so Easy Talk can hear you and paste for you.</p>
+</div>
+
+<div style="display: flex; align-items: center; gap: 14px; padding: 14px 16px; border-radius: 10px; background: #FFFFFF; border: 1px solid #EFE3C2">
+<div style="width: 36px; height: 36px; border-radius: 9px; background: #FFF1B8; display: flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#B23A22" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"></rect><path d="M5 11a7 7 0 0 0 14 0"></path><path d="M12 18v3"></path></svg></div>
+<div style="flex: 1; display: flex; flex-direction: column; gap: 2px"><strong>Microphone</strong><span style="color: #6A5D45">Only while you hold the shortcut. Never always listening.</span></div>
+<div style="display: flex; align-items: center; gap: 6px; color: #2A2118; font-weight: 600"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2A2118" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>Allowed</div>
+</div>
+
+<div style="display: flex; align-items: center; gap: 14px; padding: 14px 16px; border-radius: 10px; background: #FFFFFF; border: 1px solid #EFE3C2">
+<div style="width: 36px; height: 36px; border-radius: 9px; background: #FFF1B8; display: flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#B23A22" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="18" height="12" rx="2"></rect><path d="M7 10h1M11 10h1M15 10h2M7 14h10"></path></svg></div>
+<div style="flex: 1; display: flex; flex-direction: column; gap: 2px"><strong>Accessibility</strong><span style="color: #6A5D45">Lets Easy Talk paste at your cursor and catch the shortcut.</span></div>
+<button style="padding: 6px 14px; border-radius: 7px; border: none; background: #F5C518; color: #2A2118; font: inherit; font-weight: 600">Open Settings</button>
+</div>
+
+<div style="display: flex; align-items: center; gap: 8px; color: #6A5D45; padding: 0 4px">
+<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#6A5D45" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg>
+<span>Easy Talk can't see your screen or read other apps.</span>
+</div>
+</div>
+<div style="height: 64px; border-top: 1px solid #EFE5C8; display: flex; align-items: center; justify-content: space-between; padding: 0 22px">
+<div style="display: flex; gap: 6px" aria-label="Step 2 of 5"><div style="width: 6px; height: 6px; border-radius: 3px; background: #E3D7B3"></div><div style="width: 18px; height: 6px; border-radius: 3px; background: #E0AE00"></div><div style="width: 6px; height: 6px; border-radius: 3px; background: #E3D7B3"></div><div style="width: 6px; height: 6px; border-radius: 3px; background: #E3D7B3"></div><div style="width: 6px; height: 6px; border-radius: 3px; background: #E3D7B3"></div></div>
+<div style="display: flex; gap: 8px; align-items: center">
+<a href="Setup1Welcome.dc.html" style="padding: 7px 14px; border-radius: 7px; color: #463B28; text-decoration: none">Back</a>
+<a href="Setup3Engine.dc.html" style="padding: 7px 18px; border-radius: 7px; background: #F5C518; color: #2A2118; text-decoration: none; font-weight: 600">Continue</a>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":640,"height":480}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>

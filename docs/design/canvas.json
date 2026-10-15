@@ -1,0 +1,117 @@
+{
+ "v": 3,
+ "createdOnFiles": {
+  "v": 1,
+  "at": "2026-10-14T21:00:00Z"
+ },
+ "title": "Easy Talk Design",
+ "launch": {
+  "view": "canvas"
+ },
+ "pages": [],
+ "boards": {
+  "Main.dc.html": {
+   "x": 0,
+   "y": 0,
+   "w": 1240,
+   "h": 800,
+   "title": "Recording pill: states"
+  },
+  "MenuBar.dc.html": {
+   "x": 0,
+   "y": 1200,
+   "w": 420,
+   "h": 620,
+   "title": "Menu bar menu"
+  },
+  "SettingsGeneral.dc.html": {
+   "x": 500,
+   "y": 1200,
+   "w": 780,
+   "h": 620,
+   "title": "Settings: General"
+  },
+  "SettingsWords.dc.html": {
+   "x": 1360,
+   "y": 1200,
+   "w": 780,
+   "h": 620,
+   "title": "Settings: Words and history"
+  },
+  "Setup1Welcome.dc.html": {
+   "x": 0,
+   "y": 2240,
+   "w": 640,
+   "h": 480,
+   "title": "Setup 1: Welcome",
+   "is_interactive": true
+  },
+  "Setup2Permissions.dc.html": {
+   "x": 720,
+   "y": 2240,
+   "w": 640,
+   "h": 480,
+   "title": "Setup 2: Permissions",
+   "is_interactive": true
+  },
+  "Setup3Engine.dc.html": {
+   "x": 1440,
+   "y": 2240,
+   "w": 640,
+   "h": 480,
+   "title": "Setup 3: Speech engine",
+   "is_interactive": true
+  },
+  "Setup4Download.dc.html": {
+   "x": 2160,
+   "y": 2240,
+   "w": 640,
+   "h": 480,
+   "title": "Setup 4: Download",
+   "is_interactive": true
+  },
+  "Setup5Try.dc.html": {
+   "x": 2880,
+   "y": 2240,
+   "w": 640,
+   "h": 480,
+   "title": "Setup 5: Try it",
+   "is_interactive": true
+  }
+ },
+ "order": [
+  "Main.dc.html",
+  "MenuBar.dc.html",
+  "SettingsGeneral.dc.html",
+  "SettingsWords.dc.html",
+  "Setup1Welcome.dc.html",
+  "Setup2Permissions.dc.html",
+  "Setup3Engine.dc.html",
+  "Setup4Download.dc.html",
+  "Setup5Try.dc.html"
+ ],
+ "notes": {
+  "t1": {
+   "x": 0,
+   "y": -300,
+   "text": "Recording pill",
+   "kind": "title1",
+   "maxW": 1240
+  },
+  "t2": {
+   "x": 0,
+   "y": 900,
+   "text": "Menu bar and settings",
+   "kind": "title1",
+   "maxW": 2140
+  },
+  "t3": {
+   "x": 0,
+   "y": 1940,
+   "text": "First-run setup",
+   "kind": "title1",
+   "maxW": 3520
+  }
+ },
+ "designSystems": []
+}

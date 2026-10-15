@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Easy Talk settings, General</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0}
+svg:not([data-mark]){filter:drop-shadow(0 0 0.6px rgba(42,33,24,0.9)) drop-shadow(0 0 0.3px rgba(42,33,24,0.9))}
+a{color:#B23A22}a:hover{color:#8A2A16}
+</style>
+</helmet>
+<div style="width: 780px; height: 620px; box-sizing: border-box; padding: 30px; background: #EDE4C8; font-family: -apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif; color: #2A2118">
+<div style="height: 560px; border-radius: 12px; background: #FFFBEF; border: 1px solid #DCCFA8; box-shadow: 0 16px 40px rgba(0,0,0,0.16); display: flex; flex-direction: column; overflow: hidden; font-size: 13px">
+
+<div style="height: 84px; background: #F8F0D8; border-bottom: 1px solid #E5D9B6; display: flex; flex-direction: column; align-items: center; padding-top: 10px; box-sizing: border-box; position: relative">
+<div style="position: absolute; left: 14px; top: 14px; display: flex; gap: 8px"><div style="width: 12px; height: 12px; border-radius: 6px; background: #EE6A5F"></div><div style="width: 12px; height: 12px; border-radius: 6px; background: #F5BE4F"></div><div style="width: 12px; height: 12px; border-radius: 6px; background: #62C655"></div></div>
+<div style="position: absolute; right: 16px; top: 12px; display: flex"><svg width="22" height="18" viewBox="0 0 22 18" aria-hidden="true" data-mark="1" style="flex: none; opacity: 0.55"><path d="M2 16L5.5 9.5L3.5 8.5L7 2M8.5 16L12 9.5L10 8.5L13.5 2M15 16L18.5 9.5L16.5 8.5L20 2" stroke="#5C4317" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" fill="none"></path></svg></div>
+<div style="font-weight: 600; margin-bottom: 8px">General</div>
+<div style="display: flex; gap: 6px">
+<button style="all: unset; cursor: default; width: 96px; height: 44px; border-radius: 8px; background: #F1E4BC; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; font-size: 11px; color: #2A2118">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2A2118" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"></path></svg>General</button>
+<button style="all: unset; cursor: default; width: 96px; height: 44px; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; font-size: 11px; color: #5A4E38">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5A4E38" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h10M4 18h13"></path></svg>Words &amp; History</button>
+</div>
+</div>
+
+<div style="flex: 1; padding: 22px 64px; display: flex; flex-direction: column; gap: 18px">
+
+<div style="display: grid; grid-template-columns: 180px 1fr; row-gap: 16px; column-gap: 20px; align-items: center">
+<div style="text-align: right; color: #463B28">Talk shortcut</div>
+<div style="display: flex; align-items: center; gap: 10px">
+<button style="all: unset; cursor: default; padding: 5px 12px; border-radius: 6px; background: #FFFFFF; border: 1px solid #DCCFA8; font-weight: 600; letter-spacing: 0.04em">⌃ ⌥ Space</button>
+<span style="color: #7A6B4F">Hold to talk · double-tap to lock</span>
+</div>
+
+<label for="mic" style="text-align: right; color: #463B28">Microphone</label>
+<select id="mic" style="width: 260px; padding: 4px 8px; border-radius: 6px; border: 1px solid #DCCFA8; background: #FFFFFF; font: inherit"><option>System default (MacBook Pro Mic)</option><option>AirPods Pro</option></select>
+
+<div style="text-align: right; color: #463B28; align-self: start; padding-top: 2px">Speech engine</div>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<label style="display: flex; gap: 8px; align-items: flex-start"><input type="radio" name="engine" checked style="margin: 2px 0 0; accent-color: {{accent}}"><span><strong>Parakeet</strong> <span style="color: #7A6B4F">· fastest, 600 MB download</span></span></label>
+<label style="display: flex; gap: 8px; align-items: flex-start"><input type="radio" name="engine" style="margin: 2px 0 0; accent-color: {{accent}}"><span><strong>Apple speech</strong> <span style="color: #7A6B4F">· built into macOS, no download</span></span></label>
+</div>
+</div>
+
+<div style="height: 1px; background: #EFE3C2"></div>
+
+<div style="display: grid; grid-template-columns: 180px 1fr; row-gap: 14px; column-gap: 20px; align-items: center">
+<div style="text-align: right; color: #463B28">Sounds</div>
+<label style="display: flex; gap: 8px; align-items: center"><input type="checkbox" checked style="margin: 0; accent-color: {{accent}}"><span>Soft tick when recording starts and stops</span></label>
+
+<div style="text-align: right; color: #463B28">Startup</div>
+<label style="display: flex; gap: 8px; align-items: center"><input type="checkbox" checked style="margin: 0; accent-color: {{accent}}"><span>Open Easy Talk at login</span></label>
+</div>
+
+<div style="height: 1px; background: #EFE3C2"></div>
+
+<div style="display: grid; grid-template-columns: 180px 1fr; column-gap: 20px; align-items: start">
+<div style="text-align: right; color: #463B28">Cleanup model</div>
+<div style="display: flex; flex-direction: column; gap: 4px">
+<div><strong>Qwen 3.5 4B</strong> <span style="color: #7A6B4F">· loaded, 2.9 GB</span></div>
+<div style="display: flex; align-items: center; gap: 6px; color: #6A5D45">
+<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#B23A22" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg>
+<span>Runs on this Mac. Text in, text out. No internet, no tools.</span>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#F5C518","options":["#F5C518","#3B6FD8","#B7791F","#7C4DCC"]},"$preview":{"width":780,"height":620}}'>
+class Component extends DCLogic {
+renderVals() {
+return { accent: this.props.accent ?? '#F5C518' };
+}
+}
+</script>
+</body>
+</html>

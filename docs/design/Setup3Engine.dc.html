@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Easy Talk setup, speech engine</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0}
+svg:not([data-mark]){filter:drop-shadow(0 0 0.6px rgba(42,33,24,0.9)) drop-shadow(0 0 0.3px rgba(42,33,24,0.9))}
+a{color:#B23A22}a:hover{color:#8A2A16}
+</style>
+</helmet>
+<div style="width: 640px; height: 480px; box-sizing: border-box; background: #FFFBEF; font-family: -apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif; color: #2A2118; display: flex; flex-direction: column; font-size: 13px">
+<div style="height: 36px; display: flex; align-items: center; padding: 0 14px; gap: 8px"><div style="width: 12px; height: 12px; border-radius: 6px; background: #EE6A5F"></div><div style="width: 12px; height: 12px; border-radius: 6px; background: #E5D9B6"></div><div style="width: 12px; height: 12px; border-radius: 6px; background: #E5D9B6"></div><svg width="22" height="18" viewBox="0 0 22 18" aria-hidden="true" data-mark="1" style="margin-left: auto; flex: none; opacity: 0.55"><path d="M2 16L5.5 9.5L3.5 8.5L7 2M8.5 16L12 9.5L10 8.5L13.5 2M15 16L18.5 9.5L16.5 8.5L20 2" stroke="#5C4317" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" fill="none"></path></svg></div>
+<div style="flex: 1; display: flex; flex-direction: column; gap: 16px; padding: 12px 56px 0">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<h1 style="margin: 0; font-size: 22px; font-weight: 700">Choose how Easy Talk hears you</h1>
+<p style="margin: 0; font-size: 14px; color: #5A4E38">Both run entirely on this Mac. You can switch anytime in Settings.</p>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px">
+<button onClick="{{pickParakeet}}" style="all: unset; cursor: pointer; box-sizing: border-box; display: flex; flex-direction: column; gap: 8px; padding: 16px; border-radius: 12px; background: #FFFFFF; border: {{parakeetBorder}}; min-height: 170px">
+<div style="display: flex; justify-content: space-between; align-items: center"><strong style="font-size: 15px">Parakeet</strong><span style="padding: 2px 8px; border-radius: 10px; background: #FFF1B8; color: #8A2A16; font-size: 11px; font-weight: 600">Recommended</span></div>
+<span style="color: #5A4E38">Fastest and very accurate for English. Adds punctuation for you.</span>
+<span style="margin-top: auto; color: #7A6B4F">One-time download · about 600 MB</span>
+</button>
+<button onClick="{{pickApple}}" style="all: unset; cursor: pointer; box-sizing: border-box; display: flex; flex-direction: column; gap: 8px; padding: 16px; border-radius: 12px; background: #FFFFFF; border: {{appleBorder}}; min-height: 170px">
+<strong style="font-size: 15px">Apple speech</strong>
+<span style="color: #5A4E38">Built into macOS. Nothing extra to download.</span>
+<span style="margin-top: auto; color: #7A6B4F">No download · asks for Speech Recognition access</span>
+</button>
+</div>
+</div>
+<div style="height: 64px; border-top: 1px solid #EFE5C8; display: flex; align-items: center; justify-content: space-between; padding: 0 22px">
+<div style="display: flex; gap: 6px" aria-label="Step 3 of 5"><div style="width: 6px; height: 6px; border-radius: 3px; background: #E3D7B3"></div><div style="width: 6px; height: 6px; border-radius: 3px; background: #E3D7B3"></div><div style="width: 18px; height: 6px; border-radius: 3px; background: #E0AE00"></div><div style="width: 6px; height: 6px; border-radius: 3px; background: #E3D7B3"></div><div style="width: 6px; height: 6px; border-radius: 3px; background: #E3D7B3"></div></div>
+<div style="display: flex; gap: 8px; align-items: center">
+<a href="Setup2Permissions.dc.html" style="padding: 7px 14px; border-radius: 7px; color: #463B28; text-decoration: none">Back</a>
+<a href="Setup4Download.dc.html" style="padding: 7px 18px; border-radius: 7px; background: #F5C518; color: #2A2118; text-decoration: none; font-weight: 600">Continue</a>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":640,"height":480}}'>
+class Component extends DCLogic {
+renderVals() {
+const pick = (this.state && this.state.pick) || 'parakeet';
+const on = '2px solid #E0AE00';
+const off = '2px solid #EFE3C2';
+return {
+parakeetBorder: pick === 'parakeet' ? on : off,
+appleBorder: pick === 'apple' ? on : off,
+pickParakeet: () => this.setState({ pick: 'parakeet' }),
+pickApple: () => this.setState({ pick: 'apple' })
+};
+}
+}
+</script>
+</body>
+</html>
