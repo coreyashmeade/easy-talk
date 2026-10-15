@@ -20,7 +20,8 @@ Run it:
 
 ## Manual checks
 - Setup completed: permissions, engine choice, model verification and load, practice dictation.
-- Dictation pasted into the setup practice box and into the Claude desktop app.
+- Dictation pasted into the setup practice box and into the Claude desktop app. After Easy Talk enables its accessibility tree, Claude reports its message field directly (AXTextArea).
+- Apple speech engine: selected from the menu bar, loaded in 69 ms; dictations transcribed in 143–190 ms and pasted within 0.7 s of release.
 - Hotkey behavior (hold, double-tap lock, Esc, no stray spaces, multi-display pill) carried over from the M2 prototype.
 
 ## Issues found and fixed
@@ -29,4 +30,4 @@ Run it:
 - **Copied instead of pasted in Electron apps:** apps like Claude don't report their focused text field by default. Easy Talk now asks them to, and pastes whenever the frontmost app has a window.
 
 ## Not verified
-- The Apple speech engine, offline dictation with Wi-Fi off, and per-app list rendering in Slack, Gmail, Google Docs and ChatGPT.
+- Offline dictation with Wi-Fi off, and per-app list rendering in Slack, Gmail, Google Docs and ChatGPT.
