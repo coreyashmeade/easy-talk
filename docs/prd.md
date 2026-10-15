@@ -34,9 +34,9 @@ Product Requirements Document
 
 ## Users & Use Cases
 - **Primary user:** a single user on an Apple Silicon Mac. Reference machine: MacBook Pro, M5 Pro, 64 GB, macOS 26.6.
-- As a user, I can dictate a Slack reply and have it pasted as tidy, casual sentences without "um" or "you know."
+- As a user, I can dictate a chat reply and have it pasted as tidy, casual sentences without "um" or "you know."
 - As a user, I can ramble through an email and get clear paragraphs.
-- As a user, I can talk through a to-do list and get real bullets or a numbered list in Google Docs or Gmail.
+- As a user, I can talk through a to-do list and get real bullets or a numbered list in Gmail.
 - As a user, I can correct myself mid-sentence ("Tuesday, no wait, Wednesday") and only the correction appears.
 - As a user, I can recover any recent dictation from history if a paste went to the wrong place.
 
@@ -169,13 +169,13 @@ Product Requirements Document
 - **macOS permissions:** Microphone, Accessibility, and Speech Recognition (Apple engine only).
 
 ## Acceptance Criteria
-- **R1–R2:** Given the cursor is in Slack, when the user holds Control + Option + Space, speaks and releases, then cleaned text is pasted and no extra space is typed.
+- **R1–R2:** Given the cursor is in a text field, when the user holds Control + Option + Space, speaks and releases, then cleaned text is pasted and no extra space is typed.
 - **R3:** Given recording is active, when the user presses Esc, then nothing is pasted or saved.
 - **R9–R11:** Given Wi-Fi is off, when the user dictates with either speech engine, then transcription succeeds.
 - **R13:** Given "um so I think uh we should ship it", then output is "I think we should ship it." (or equivalent without filler).
 - **R14:** Given "let's meet Tuesday, no wait, Wednesday", then output contains "Wednesday" and not "Tuesday."
 - **R15:** Across the test set, no output contains a fact, name or sentence not in the raw transcript.
-- **R16–R17, R22:** Given "three things: first call Sam, second send the deck, third book flights", then Google Docs and Gmail show a real three-item numbered list, and Slack, Claude and ChatGPT show a readable list.
+- **R16–R17, R22:** Given "three things: first call Sam, second send the deck, third book flights", then Gmail shows a real three-item numbered list, and Claude and ChatGPT show a readable list.
 - **R20:** Cleanup runs on Qwen 3.5 4B with no network access.
 - **R21, R23:** Given the clipboard holds "ABC", when a dictation is pasted, then afterward the clipboard holds "ABC" again.
 - **R24:** Given no text field is focused, when a dictation finishes, then the text is on the clipboard and the pill shows "Copied."
@@ -186,7 +186,7 @@ Product Requirements Document
 - **R41:** After 20 dictations, no audio files exist on disk from Easy Talk.
 - **R42–R44:** Easy Talk appears only under Microphone, Accessibility (and Speech Recognition if chosen) in System Settings > Privacy & Security.
 - **G3:** Median release-to-paste for 30-second dictations is 2 seconds or less across 10 tries.
-- **Test apps:** paste works correctly in Slack, Gmail, Google Docs, Claude and ChatGPT. Notion gets a light check.
+- **Test apps:** paste works correctly in Gmail, Claude and ChatGPT.
 
 ## Rollout / Release Plan
 1. **Design:** mockups of the pill, menu bar menu, settings and onboarding (approved; `docs/design/`).

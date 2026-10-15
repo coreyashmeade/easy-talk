@@ -19,3 +19,4 @@ Newest at the bottom. Format: `YYYY-MM-DD: <decision>. Why: <reason>. Replaces: 
 2026-10-15: Models are downloaded from pinned Hugging Face revisions and verified against SHA-256 checksums before use. Why: PRD R40, supply-chain safety.
 2026-10-15: Project closed as a proof of concept after M3. All P0 requirements built and verified; P1 features (settings window, history, launch at login, custom sounds, mic and shortcut pickers) deferred; daily-use review dropped. Replaces: M4 and M5 in the build plan.
 2026-10-15: Verification uses an in-app self-test (`--selftest`) that runs the production pipeline on synthesized speech. Why: repeatable checks without simulated keystrokes or pasting into other apps.
+2026-10-15: Target apps for paste are Gmail, Claude and ChatGPT (all verified). Why: Slack and Google Docs aren't needed for this workflow. Replaces: Slack, Gmail, Google Docs, Claude and ChatGPT.

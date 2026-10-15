@@ -16,7 +16,7 @@ Project Plan
 - P0 requirements built and verified: met (`docs/m3-results.md`).
 - 2 seconds or less from release to text for a 30-second dictation: met (75 s of speech in 1.98 s).
 - No network connections after the model download: met.
-- Lists and paragraphs paste correctly in target apps: verified in Easy Talk and Claude; other apps not checked.
+- Lists and paragraphs paste correctly in the target apps (Gmail, Claude, ChatGPT): met.
 
 ## Scope & Deliverables
 - Risk checks for hotkey capture, speed and quality, and rich-text paste.
@@ -44,7 +44,7 @@ M2 gated M3: no full build until the hotkey, model and paste approaches were pro
 ## Risks, Assumptions & Mitigations
 - **Risk:** the cleanup model rewords too much or responds to dictated instructions. **Mitigation:** test set, PRD safety fallback (R38), 8B upgrade path. M2: 34/34 cases pass.
 - **Risk:** macOS re-prompts for permissions after each rebuild. **Mitigation:** stable Apple Development signing. Confirmed in M2.
-- **Risk:** rich-text paste renders differently per app. **Mitigation:** HTML + RTF + plain text on the clipboard. Not verified in every target app.
+- **Risk:** rich-text paste renders differently per app. **Mitigation:** HTML + RTF + plain text on the clipboard. Verified in Gmail, Claude and ChatGPT.
 - **Assumption:** a free Apple Developer team is sufficient for personal use; a paid account is needed only for a signed public release.
 
 ## Open Questions
