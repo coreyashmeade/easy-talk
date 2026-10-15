@@ -15,6 +15,8 @@ final class SetupModel: ObservableObject {
     @Published var downloadError: String?
     @Published var downloading = false
     @Published var modelsReady = false
+    @Published var loading = false
+    @Published var loadError: String?
     @Published var practiceText = ""
 
     var onModelsInstalled: (() -> Void)?
@@ -50,6 +52,7 @@ final class SetupModel: ObservableObject {
         guard !downloading else { return }
         downloading = true
         downloadError = nil
+        loadError = nil
         var models: [(String, PinnedModel)] = [("Qwen 3.5 4B cleanup model", ModelManifest.qwen)]
         if engine == .parakeet { models.insert(("Parakeet speech model", ModelManifest.parakeet), at: 0) }
         Task {
@@ -149,17 +152,41 @@ struct SetupView: View {
                 .padding(14).background(Color.white).clipShape(RoundedRectangle(cornerRadius: 10))
             }
             if let err = model.downloadError { Text(err).foregroundStyle(Brand.accentStrong).font(.system(size: 13)) }
+            loadStatus
             Label("Each file is checked against a known fingerprint before it's used.", systemImage: "checkmark.shield")
                 .font(.system(size: 13)).foregroundStyle(Brand.pillMuted)
         }
         .padding(.top, 12)
-        .onAppear { model.download() }
+        .onAppear { if !model.modelsReady { model.download() } }
+    }
+
+    /// After downloading, the models are loaded once so setup only continues when they actually work.
+    @ViewBuilder private var loadStatus: some View {
+        if let err = model.loadError {
+            VStack(alignment: .leading, spacing: 8) {
+                Label(err.components(separatedBy: "\n").prefix(2).joined(separator: " "), systemImage: "exclamationmark.triangle.fill")
+                    .foregroundStyle(Brand.accentStrong).font(.system(size: 13)).fixedSize(horizontal: false, vertical: true)
+                HStack(spacing: 10) {
+                    Button("Copy details") {
+                        NSPasteboard.general.clearContents()
+                        NSPasteboard.general.setString(err, forType: .string)
+                    }
+                    Button("Try again") { model.download() }
+                }
+                .buttonStyle(.bordered)
+            }
+        } else if model.modelsReady {
+            Label("Models loaded and working", systemImage: "checkmark.circle.fill").bold()
+        } else if model.loading {
+            Label("Loading models to check they work… (first time can take about 15 seconds)", systemImage: "hourglass")
+                .font(.system(size: 13)).foregroundStyle(Brand.pillMuted)
+        }
     }
 
     private var tryIt: some View {
         VStack(alignment: .leading, spacing: 12) {
             heading("Try it", "Click in the box, hold ⌃ ⌥ Space and say a few things you need to do today.")
-            if !model.modelsReady { Label("Loading models…", systemImage: "hourglass").foregroundStyle(Brand.pillMuted) }
+            loadStatus
             TextEditor(text: $model.practiceText)
                 .font(.system(size: 14)).scrollContentBackground(.hidden).padding(8)
                 .background(Color.white).clipShape(RoundedRectangle(cornerRadius: 8))
@@ -189,7 +216,7 @@ struct SetupView: View {
         switch model.step {
         case 1: return model.permissionsOK
         case 2: return model.engine == .parakeet || model.speechGranted
-        case 3: return model.downloadsDone && !model.downloading
+        case 3: return model.downloadsDone && !model.downloading && model.modelsReady
         default: return true
         }
     }

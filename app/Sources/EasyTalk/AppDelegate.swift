@@ -21,6 +21,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var showPillWork: DispatchWorkItem?
     private var processingTask: Task<Void, Never>?
     private var modelsReady = false
+    private var loadedEngine: SpeechEngineChoice?
+    private var lastError: String?
     private var statusLine = "Starting…"
 
     private let minHold: TimeInterval = 0.3
@@ -47,35 +49,53 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     private var enginesStarting = false
 
+    /// Loads the chosen speech engine and the cleanup model, and reports the result to the menu and to setup.
     private func startEngines() {
         if Hotkey.isTrusted { Log.write("Hotkey installed: \(hotkey.install())") }
-        guard !enginesStarting, !modelsReady else { return }
-        enginesStarting = true
-        setStatus("Loading models…")
         let engine = Settings.speechEngine
+        if modelsReady && loadedEngine == engine { setupModel?.modelsReady = true; return }
+        guard !enginesStarting else { return }
+        enginesStarting = true
+        modelsReady = false
+        lastError = nil
+        setupModel?.loadError = nil
+        setupModel?.loading = true
+        setStatus("Loading models…")
         Task {
             do {
                 let t: Transcriber = engine == .parakeet ? ParakeetTranscriber() : AppleTranscriber()
                 let start = Date()
                 try await t.load()
                 Log.write("Speech engine \(engine.rawValue) loaded in \(Int(Date().timeIntervalSince(start) * 1000)) ms")
-                try await cleaner.load()
-                Log.write("Cleanup model loaded in \(Int(Date().timeIntervalSince(start) * 1000)) ms total")
+                if await !cleaner.isLoaded { try await cleaner.load() }
+                Log.write("Cleanup model ready after \(Int(Date().timeIntervalSince(start) * 1000)) ms total")
                 await MainActor.run {
                     self.enginesStarting = false
                     self.transcriber = t
+                    self.loadedEngine = engine
                     self.modelsReady = true
+                    self.setupModel?.loading = false
                     self.setupModel?.modelsReady = true
                     self.setStatus("Easy Talk is ready")
                 }
             } catch {
                 Log.write("Model load failed: \(error)")
+                let details = "Easy Talk couldn't load its models.\n\(error.localizedDescription)\n\(error)\nLog: ~/Library/Logs/EasyTalk.log"
                 await MainActor.run {
                     self.enginesStarting = false
+                    self.lastError = details
+                    self.setupModel?.loading = false
+                    self.setupModel?.loadError = details
                     self.setStatus("Problem loading models: \(error.localizedDescription)")
                 }
             }
         }
+    }
+
+    @objc private func copyErrorDetails() {
+        guard let lastError else { return }
+        NSPasteboard.general.clearContents()
+        NSPasteboard.general.setString(lastError, forType: .string)
     }
 
     // MARK: menu bar
@@ -98,6 +118,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         }
         engineItem.submenu = sub
         menu.addItem(engineItem)
+        if lastError != nil {
+            let copy = NSMenuItem(title: "Copy Error Details", action: #selector(copyErrorDetails), keyEquivalent: "")
+            copy.target = self
+            menu.addItem(copy)
+        }
         let setup = NSMenuItem(title: "Open Setup…", action: #selector(openSetupAction), keyEquivalent: "")
         setup.target = self
         menu.addItem(setup)
@@ -117,16 +142,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             return
         }
         Settings.speechEngine = e
-        modelsReady = false
         Task {
             if e == .apple { _ = await AppleTranscriber.requestPermission() }
-            let t: Transcriber = e == .parakeet ? ParakeetTranscriber() : AppleTranscriber()
-            do {
-                try await t.load()
-                await MainActor.run { self.transcriber = t; self.modelsReady = true; self.setStatus("Easy Talk is ready") }
-            } catch {
-                await MainActor.run { self.setStatus("Problem: \(error.localizedDescription)") }
-            }
+            await MainActor.run { self.startEngines() }
         }
         rebuildMenu()
     }
@@ -137,10 +155,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         let model = SetupModel()
         model.step = step
         model.modelsReady = modelsReady
-        model.onModelsInstalled = { [weak self] in
-            guard let self else { return }
-            if !self.modelsReady || self.transcriber == nil { self.startEngines() }
-        }
+        model.loadError = lastError
+        model.onModelsInstalled = { [weak self] in self?.startEngines() }
         model.onFinish = { [weak self] in
             Settings.setupComplete = true
             self?.setupWindow?.close()
@@ -165,7 +181,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private func handle(_ e: Hotkey.Event) {
         switch (e, phase) {
         case (.pressStart, .idle):
-            guard modelsReady else { pill.show(.problem(statusLine.hasPrefix("Problem") ? "Models failed to load" : "Still loading models…"), hideAfter: 1.5); return }
+            guard modelsReady else {
+                pill.show(.problem(lastError != nil ? "Models didn't load · see menu bar" : "Still loading models…"), hideAfter: 2)
+                return
+            }
             let isDoubleTap = Date().timeIntervalSince(lastTapEnd) < doubleTap
             startRecording(locked: isDoubleTap)
         case (.pressEnd(let held), .pending):

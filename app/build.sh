@@ -1,7 +1,7 @@
 #!/bin/zsh
 # Build, bundle and sign Easy Talk.app. Usage: ./build.sh [--run]
 # Signing identity: $SIGN_IDENTITY, default "Apple Development".
-set -e
+set -e -o pipefail
 cd "$(dirname "$0")"
 xcodebuild -scheme EasyTalk -destination 'platform=macOS' -derivedDataPath .build-xc \
   -skipMacroValidation -skipPackagePluginValidation -configuration Release build | grep -E "error:|BUILD (SUCCEEDED|FAILED)"

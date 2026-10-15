@@ -1,5 +1,6 @@
 import CryptoKit
 import EasyTalkCore
+import FluidAudio
 import Foundation
 
 enum ModelError: LocalizedError {
@@ -24,8 +25,10 @@ final class ModelStore {
 
     /// Folder names match what the libraries expect when loading from disk.
     func folder(for model: PinnedModel) -> URL {
-        // FluidAudio looks for Parakeet v2 in a folder named "parakeet-tdt-0.6b-v2".
-        let name = model.repo == ModelManifest.parakeet.repo ? "parakeet-tdt-0.6b-v2" : String(model.repo.split(separator: "/").last!)
+        // Parakeet goes where FluidAudio will look for it; ask the library rather than hardcoding the name.
+        let name = model.repo == Repo.parakeetV2.rawValue
+            ? Repo.parakeetV2.folderName
+            : String(model.repo.split(separator: "/").last!)
         return root.appendingPathComponent(name, isDirectory: true)
     }
 
