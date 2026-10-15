@@ -21,15 +21,14 @@ Product Requirements Document
 - **G2. Reads like writing:** output has filler removed, self-corrections resolved, and paragraphs, bullets and numbered lists where the content calls for them, while keeping the speaker's words and meaning.
 - **G3. Feels fast:** for a 30-second dictation, text appears within 2 seconds of releasing the hotkey.
 - **G4. Private and contained:** no audio or text leaves the Mac, and the cleanup model can only return text.
-- **G5. Gets used:** Easy Talk is the primary dictation tool on 10 of the first 14 days of use.
 
 **Non-Goals**
 - Voice commands, app control, agents, meetings, notes, teams or cloud sync.
-- Rewriting selected text, per-app styles or a cleanup-strength slider (deferred to Later).
-- Live words on screen while talking (Later).
-- Languages other than English (Never).
+- Rewriting selected text, per-app styles or a cleanup-strength slider.
+- Live words on screen while talking.
+- Languages other than English.
 - Windows, Linux or mobile versions.
-- Saving audio recordings (Never).
+- Saving audio recordings.
 - Accounts, payments, analytics or auto-updates.
 
 ## Users & Use Cases
@@ -160,7 +159,7 @@ Product Requirements Document
 - **Offline:** every feature except the first model download works with Wi-Fi off.
 - **Storage:** no dictation history is stored (history deferred).
 - **Dependencies:** few open-source libraries, pinned to exact versions. Models come only from official publishers.
-- **Licensing:** Easy Talk's own code is written fresh (no code copied from GPL projects), so it can be released under MIT later.
+- **Licensing:** Easy Talk's own code is written fresh (no code copied from GPL projects), and the project is released under the MIT License.
 
 ## Dependencies & Integrations
 - **macOS 26** with Apple Silicon.
@@ -188,17 +187,16 @@ Product Requirements Document
 - **G3:** Median release-to-paste for 30-second dictations is 2 seconds or less across 10 tries.
 - **Test apps:** paste works correctly in Gmail, Claude and ChatGPT.
 
-## Rollout / Release Plan
-1. **Design:** mockups of the pill, menu bar menu, settings and onboarding (approved; `docs/design/`).
-2. **Build:** working core loop first (P0), then P1 features.
-3. **Test:** automated test phrases for cleanup and the safety check, then the acceptance criteria above.
-4. **Daily use:** two weeks of real use (G5), with issues logged.
-5. **Optional public release:** sign and notarize the app, write a one-page privacy note, and choose a license (MIT planned).
+## Rollout / Release
+1. **Design:** pill, menu bar menu, settings and setup screens (approved; `docs/design/`).
+2. **Build:** core loop and all P0 requirements.
+3. **Test:** built-in self-test plus manual checks (`docs/m3-results.md`).
+4. **Release:** v0.1.0 on GitHub as an unmaintained proof of concept: source under the MIT License and an unnotarized app download.
 
 ## Risks & Open Questions
 - **Risk:** the 4B model reorders or rewords too much. **Mitigation:** strict cleanup instructions, the R38 check, and the 8B upgrade path.
 - **Risk:** rich-text pasting looks different in each app. **Mitigation:** the plain-text version on the clipboard, and per-app testing in the five target apps.
-- **Risk:** the 2-second target is missed on long dictations. **Mitigation:** keep the model loaded, trim silence, and measure early in the build.
+- **Risk:** the 2-second target is missed on long dictations. **Mitigation:** the model stays loaded. Measured: 75 s of speech processed in 1.98 s.
 - **Risk:** a three-key hold is tiring for long dictation. **Mitigation:** double-tap lock (R4) and a changeable trigger (R5).
 - **Open questions:** none.
 

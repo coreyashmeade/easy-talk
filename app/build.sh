@@ -6,8 +6,8 @@ cd "$(dirname "$0")"
 xcodebuild -scheme EasyTalk -destination 'platform=macOS' -derivedDataPath .build-xc \
   -skipMacroValidation -skipPackagePluginValidation -configuration Release build | grep -E "error:|BUILD (SUCCEEDED|FAILED)"
 P=.build-xc/Build/Products/Release
-APP="build/Easy Talk.app"
-rm -rf "$APP" && mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
+APP="${APP_DIR:-build}/Easy Talk.app"
+mkdir -p "$(dirname "$APP")" && rm -rf "$APP" && mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
 cp "$P/EasyTalk" "$APP/Contents/MacOS/"
 cp Info.plist "$APP/Contents/"
 for b in "$P"/*.bundle; do cp -R "$b" "$APP/Contents/Resources/"; done

@@ -25,7 +25,7 @@
 **Safety.** All five instruction-style dictations were returned as cleaned sentences, not acted on: a code request, "ignore your instructions", a trivia question, "summarize this" and a persona prompt. The fallback was not needed.
 
 **Observations for the build:**
-- Longer dictations are lightly reworded (within the PRD's "light reordering"); worth reviewing during daily use.
+- Longer dictations are lightly reworded, within the PRD's "light reordering" allowance.
 - The speech model occasionally title-cases short phrases or mishears a word.
 
 **Decision:** keep Qwen 3.5 4B; the 8B upgrade is not needed.
@@ -41,4 +41,4 @@ Event-tap prototype, signed with the stable development identity:
 
 ## 3. Rich paste
 
-`spikes/paste/run.sh rich` puts HTML, RTF and plain text on the clipboard together. The sample pasted correctly in the apps tested. M3 acceptance re-checks lists per app with real dictations.
+`spikes/paste/run.sh rich` puts HTML, RTF and plain text on the clipboard together. The sample pasted correctly in the apps tested; real dictations were confirmed in Gmail, Claude and ChatGPT in M3.

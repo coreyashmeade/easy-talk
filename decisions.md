@@ -10,7 +10,7 @@ Newest at the bottom. Format: `YYYY-MM-DD: <decision>. Why: <reason>. Replaces: 
 2026-10-14: PRD approved (`docs/prd.md`).
 2026-10-15: Pill sits at the lower middle of the active display, just above the Dock, 86% opaque with background blur. Why: multi-monitor use; chat inputs are usually near the bottom of the screen in use. Replaces: pill below the notch.
 2026-10-15: Visual identity: warm yellow and red palette, cream windows, a cat-ear pill silhouette, a three-line zig-zag mark, and subtle dark outlines on icons. Replaces: graphite pill with teal accents.
-2026-10-15: Design approved; source snapshot in `docs/design/`. The Figma copy is paused and out of date.
+2026-10-15: Design approved; source snapshot in `docs/design/`.
 2026-10-15: Build plan adopted with risk checks (hotkey, speed/quality, rich paste) before the core loop. Why: retire the riskiest unknowns before building around them.
 2026-10-15: Parakeet v2 (English) selected explicitly. Why: matches the English-only scope; the library default is multilingual v3.
 2026-10-15: Builds target macOS 26.0 and are signed with a stable Apple Development identity. Why: the Xcode 27 SDK targets macOS 27 by default; stable signing keeps Microphone and Accessibility permissions across rebuilds.
@@ -20,3 +20,4 @@ Newest at the bottom. Format: `YYYY-MM-DD: <decision>. Why: <reason>. Replaces: 
 2026-10-15: Project closed as a proof of concept after M3. All P0 requirements built and verified; P1 features (settings window, history, launch at login, custom sounds, mic and shortcut pickers) deferred; daily-use review dropped. Replaces: M4 and M5 in the build plan.
 2026-10-15: Verification uses an in-app self-test (`--selftest`) that runs the production pipeline on synthesized speech. Why: repeatable checks without simulated keystrokes or pasting into other apps.
 2026-10-15: Target apps for paste are Gmail, Claude and ChatGPT (all verified). Why: Slack and Google Docs aren't needed for this workflow. Replaces: Slack, Gmail, Google Docs, Claude and ChatGPT.
+2026-10-15: Released as v0.1.0 under the MIT License: public, archived and not maintained. The download is unnotarized and has no personal signing identity; users approve it once in System Settings or build from source. Why: free distribution without exposing a personal developer identity; notarization would require a paid Apple Developer account.
