@@ -32,6 +32,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     // MARK: launch
 
     func applicationDidFinishLaunching(_ n: Notification) {
+        NSApp.mainMenu = Self.makeMainMenu()  // gives Easy Talk's own windows working Edit shortcuts (⌘C, ⌘V, ⌘A)
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
         statusItem.button?.image = NSImage(systemSymbolName: "waveform", accessibilityDescription: "Easy Talk")
         rebuildMenu()
@@ -96,6 +97,27 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         guard let lastError else { return }
         NSPasteboard.general.clearContents()
         NSPasteboard.general.setString(lastError, forType: .string)
+    }
+
+    private static func makeMainMenu() -> NSMenu {
+        let main = NSMenu()
+        let appItem = NSMenuItem()
+        let appMenu = NSMenu()
+        appMenu.addItem(withTitle: "Quit Easy Talk", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
+        appItem.submenu = appMenu
+        main.addItem(appItem)
+        let editItem = NSMenuItem()
+        let edit = NSMenu(title: "Edit")
+        edit.addItem(withTitle: "Undo", action: Selector(("undo:")), keyEquivalent: "z")
+        edit.addItem(withTitle: "Redo", action: Selector(("redo:")), keyEquivalent: "Z")
+        edit.addItem(.separator())
+        edit.addItem(withTitle: "Cut", action: #selector(NSText.cut(_:)), keyEquivalent: "x")
+        edit.addItem(withTitle: "Copy", action: #selector(NSText.copy(_:)), keyEquivalent: "c")
+        edit.addItem(withTitle: "Paste", action: #selector(NSText.paste(_:)), keyEquivalent: "v")
+        edit.addItem(withTitle: "Select All", action: #selector(NSText.selectAll(_:)), keyEquivalent: "a")
+        editItem.submenu = edit
+        main.addItem(editItem)
+        return main
     }
 
     // MARK: menu bar
@@ -261,16 +283,20 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         pill.show(.thinking)
         let words = Settings.wordList
         let transcriber = self.transcriber
+        let audioSeconds = Double(samples.count) / Recorder.sampleRate
+        let released = Date()
         processingTask = Task { [weak self] in
             guard let self else { return }
             // Silence-only recordings paste nothing.
             guard peak > 0.008, let transcriber,
                   let rawText = try? await transcriber.transcribe(samples),
                   !rawText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
+                Log.write(String(format: "Dictation: %.1f s audio, no speech detected (peak %.4f)", audioSeconds, peak))
                 await MainActor.run { self.finish(.noSpeech) }
                 return
             }
             if Task.isCancelled { return }
+            let transcribedAt = Date()
             let raw = TextRules.applyWordList(rawText, words: words)
             var final = raw
             var fallbackWhy: String?
@@ -283,8 +309,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             if Task.isCancelled { return }
             let text = final
             let why = fallbackWhy
+            let ms = { (d: Date) in Int(d.timeIntervalSince(released) * 1000) }
+            Log.write(String(format: "Dictation: %.1f s audio, transcribed %d ms, cleaned %d ms, fallback=%@",
+                             audioSeconds, ms(transcribedAt), ms(Date()), why ?? "none"))
             await MainActor.run {
                 let outcome = Paster.deliver(text)
+                Log.write("Delivered: \(outcome == .pasted ? "pasted" : "copied") in \(ms(Date())) ms after release")
                 if outcome == .copied { self.finish(.copied) }
                 else if why != nil { self.finish(.fallback("Cleanup skipped")) }
                 else { self.finish(.done(words: TextRules.wordCount(text))) }

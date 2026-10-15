@@ -21,7 +21,12 @@ enum Paster {
 
         guard target else { return .copied }  // R24: keep it on the clipboard
         let ours = pb.changeCount
-        pressCommandV()
+        if NSWorkspace.shared.frontmostApplication?.processIdentifier == ProcessInfo.processInfo.processIdentifier {
+            // Easy Talk's own windows (e.g. the setup practice box): paste straight into the focused field.
+            NSApp.sendAction(#selector(NSText.paste(_:)), to: nil, from: nil)
+        } else {
+            pressCommandV()
+        }
         // Restore the previous clipboard once the app has had time to read the paste (R23).
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             guard pb.changeCount == ours, let saved else { return }
